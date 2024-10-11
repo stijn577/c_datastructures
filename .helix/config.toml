@@ -1,0 +1,5 @@
+[keys.normal]
+C-b = [":sh make build"]
+C-r = [":sh make", ":sh ./a"]
+C-c = [":sh make clean --quiet"]
+# C-r = [":new", ":insert-output ./a"]
