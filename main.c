@@ -13,26 +13,24 @@ void run_BinaryTree(void);
 void run_CircularBuffer(void);
 void run_Herhaal(void);
 
-typedef void (*defer_func_t)(void *);
+typedef void (*defer_func_t)(void*);
 
 typedef struct {
   defer_func_t func;
-  void *arg;
-  const char *func_name;
-  const char *arg_name;
+  void* arg;
+  const char* func_name;
+  const char* arg_name;
 } defer_t;
 
 #define CONCATENATE_DETAIL(x, y) x##y
 #define CONCATENATE(x, y) CONCATENATE_DETAIL(x, y)
 
-#define defer(func, arg)                                                       \
-  defer_t CONCATENATE(_defer_, __LINE__)                                       \
-      __attribute__((cleanup(defer_invoke))) = {func, arg, STRINGIFY(func),    \
-                                                STRINGIFY(arg)}
+// macro om een soort defered free te doen, zeker niet veilig voor een echte toepassing
+#define defer(func, arg) defer_t CONCATENATE(_defer_, __LINE__) __attribute__((cleanup(defer_invoke))) = {func, arg, STRINGIFY(func), STRINGIFY(arg)}
 
 #define STRINGIFY(x) #x
 
-void defer_invoke(defer_t *d) {
+void defer_invoke(defer_t* d) {
   if (d && d->func) {
     printf("Executing deferred function: %s(%s)\n", d->func_name, d->arg_name);
     d->func(d->arg);
@@ -42,14 +40,13 @@ void defer_invoke(defer_t *d) {
 int main(void) {
   srand(time(NULL));
 
-  // run_LinkedList();
+  run_LinkedList();
   printf("\n");
-  // run_BinaryTree();
+  run_BinaryTree();
   printf("\n");
-  // run_CircularBuffer();
+  run_CircularBuffer();
   printf("\n");
   run_Herhaal();
-
 }
 
 void run_LinkedList(void) {
@@ -82,7 +79,7 @@ void run_LinkedList(void) {
 
   print_LList(head);
 
-  // free_LinkedList(&head);
+  free_LinkedList(&head);
 }
 
 void run_BinaryTree(void) {
@@ -93,7 +90,6 @@ void run_BinaryTree(void) {
 }
 
 void run_CircularBuffer(void) {
-
   CircularBuffer buff1 = new_CircularBuffer(5);
   defer(free_CircularBuffer, &buff1);
 
@@ -116,12 +112,12 @@ void run_CircularBuffer(void) {
   print_CircularBuffer(buff2);
 }
 
-char *herhaal(const char *s, size_t n) {
+char* herhaal(const char* s, size_t n) {
   size_t s_len = strlen(s);
   size_t out_len = s_len * n + 1;
-  char *out = (char *)malloc(out_len);
+  char* out = (char*)malloc(out_len);
 
-  char *iter = out;
+  char* iter = out;
   size_t iter_len = out_len;
 
   while (n > 0) {
@@ -134,7 +130,7 @@ char *herhaal(const char *s, size_t n) {
 }
 
 void run_Herhaal(void) {
-  const char *stijn = "stijn";
-  char *repeated = herhaal(stijn, 1);
+  const char* test = "test";
+  char* repeated = herhaal(test, 3);
   printf("%s", repeated);
 }
