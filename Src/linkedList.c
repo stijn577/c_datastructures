@@ -17,7 +17,7 @@ void push_FrontLList(m_LinkedList *list, size_t data) {
   new->data = data;
   new->next = *list;
 
-  printf("Pushing '%zu' to front...\n", data);
+  // printf("Pushing '%zu' to front...\n", data);
 
   *list = new;
 }
@@ -31,7 +31,7 @@ void push_BackLList(m_LinkedList *list, size_t data) {
     *list = new;
   }
 
-  printf("Pushing '%zu' to back...\n", data);
+  // printf("Pushing '%zu' to back...\n", data);
 
   m_LinkedList help = *list;
   while (help->next) {
@@ -100,10 +100,22 @@ void reverse_LList(m_LinkedList *list) {
 }
 
 void print_LList(c_List list) {
-  printf("Printing list...\n");
+  // printf("Printing list...\n");
   while (list) {
     printf("%zu\t", list->data);
     list = list->next;
   }
   printf("X\n");
+}
+
+void free_LinkedList(void *list) {
+  m_LinkedList *_list = (m_LinkedList *)list;
+  m_LinkedList help = *_list;
+  while (*_list != NULL) {
+    help = (*_list)->next;
+    free(*_list);
+    *_list = help;
+  }
+
+  list = NULL;
 }

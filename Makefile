@@ -1,7 +1,10 @@
-SH = nu.exe
+SH = nu.exe -l -c
+
 CC = clang
-FLAGS = -Wall -Wextra -std=c99
-C_OBJECT_LIST = build/main.o build/linkedList.o build/binaryTree.o
+EXTRAS = -gdwarf
+FLAGS =  -Wall -Wextra -std=c11 ${EXTRAS}
+
+C_OBJECT_LIST = $(patsubst Src/%.c, build/%.o, $(wildcard **/*.c *.c))
 
 r: build
 	./a
@@ -13,12 +16,16 @@ build: ${C_OBJECT_LIST}
 	${CC} ${FLAGS} $^
 
 build/main.o: main.c
-	${SH} -c "mkdir build"
+	${SH} "mkdir build"
 	${CC} ${FLAGS} -c $^ -o $@
 
 build/%.o: Src/%.c
 	${CC} ${FLAGS} -c $< -o $@
 
+dump: build
+	${SH} "x86asm ./a.exe"
+
 clean:
-	${SH} -c "rm -v -rf build/*"
-	${SH} -c "rm -v -f a.exe"
+	${SH} "rm -v -rf build/*"
+	${SH} "rm -v -f a.exe"
+	${SH} "rm -v -f dump.asm"

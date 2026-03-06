@@ -1,11 +1,10 @@
-#include <cstdlib>
-#include <string.h>
+#pragma once
+
+#include <stdlib.h>
 
 typedef struct cString {
   char *ptr;
   size_t len;
-  size_t capacity;
 } cString;
 
-cString *new_cString(void);
-cString *new_cString(const char *data);
+cString new_cString(const char *data);
